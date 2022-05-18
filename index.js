@@ -38,6 +38,22 @@ const run = async () => {
       const todos = await todoCollection.deleteOne(query);
       res.send(todos);
     });
+    //update api
+
+    app.put("/todos/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateData = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          checked: updateData?.checked,
+        },
+      };
+
+      const result = await todoCollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+    });
   } finally {
   }
 };
